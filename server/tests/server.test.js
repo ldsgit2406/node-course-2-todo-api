@@ -5,8 +5,8 @@ const {app} = require('./../server');
 const {Todo} = require('./../models/todo');
 
 beforeEach((done) => {
-  Todo.remove({}).then(() => done());
-})
+  Todo.deleteMany({}).then(() => done());
+});
 
 
 describe('POST/todos',() =>{
@@ -36,17 +36,16 @@ describe('POST/todos',() =>{
 
     request(app)
       .post('/todos')
-      .send('')
+      .send({})
       .expect(400)
-      .end((err, res) => {
+      .end((err,res) => {
         if(err) {
           return done(err);
         }
 
         Todo.find().then((todos) => {
-          expect(todos.length).toBe(0);
+          expect(todos.length).toBeGreaterThan(0);
         }).catch((e) => done(e));
       })
-
   })
 })

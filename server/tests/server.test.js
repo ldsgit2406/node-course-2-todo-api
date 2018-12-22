@@ -9,8 +9,8 @@ beforeEach((done) => {
 });
 
 
-describe('POST/todos',() =>{
-  it('should create a new todo', () =>{
+describe('POST/todos',() => {
+  it('should create a new todo', (done) => {
     var text = 'Test todo text';
 
     request(app)
@@ -27,6 +27,7 @@ describe('POST/todos',() =>{
 
         Todo.find().then((todos) => {
           expect(todos.length).toBeGreaterThan(0);
+          done();
         }).catch((e) => done(e));
       })
 
@@ -44,7 +45,8 @@ describe('POST/todos',() =>{
         }
 
         Todo.find().then((todos) => {
-          expect(todos.length).toBeGreaterThan(0);
+          expect(todos.length).toBe(0);
+          done();
         }).catch((e) => done(e));
       })
   })

@@ -45,7 +45,7 @@ app.get('/todos/:id', (req , res) => {
     }else{
       res.status(200).send(JSON.stringify(todo, undefined, 2));
     }
-  }).catch((e) => res.status(400).send(e););
+  }).catch((e) => res.status(400).send(e));
 
 })
 

@@ -1,5 +1,6 @@
 const expect = require('expect');
 const request = require('supertest');
+const {ObjectID} = require('mongodb');
 
 const {app} = require('./../server');
 const {Todo} = require('./../models/todo');
@@ -8,6 +9,8 @@ const {Todo} = require('./../models/todo');
 //   Todo.deleteMany({}).then(() => done());
 // });
 
+const id = '5c1ddd8ab459f019749dbc63';
+
 describe('GET/todos',() => {
 
   it('fetch all the todos', (done) => {
@@ -15,7 +18,7 @@ describe('GET/todos',() => {
       .get('/todos')
       .expect(200)
       .expect((res) =>{
-        expect(res.body.todos.length).toBeGreaterThan(0);
+         expect(res.body.todos.length).toBeGreaterThan(0);
       })
       .end(done);
   })
@@ -63,4 +66,41 @@ describe('POST/todos',() => {
         // }).catch((e) => done(e));
       })
   })
+})
+
+describe('GET /todos/:id', () => {
+
+  it('should return todo doc',(done) => {
+    var text1 = 'Test todo text';
+    var todoid = new ObjectID(id).toHexString();
+
+    request(app)
+      .get(`/todos/${todoid}`)
+      .expect(200)
+      .expect((res) => {
+      //  expect(res.body.text).toBe(text1);
+      })
+      .end(done);
+  })
+
+  it('should return 404 if todo not found', (done) => {
+    request(app)
+      .get(`/todos/5c1ddd8ab459f019749dbc64`)
+      .expect(404)
+      .expect((res) => {
+      //  expect(res.body.text).toBe(text1);
+      })
+      .end(done);
+  })
+
+  it('should return 404 if todo not found', (done) => {
+    request(app)
+      .get('/todos/5c1dd')
+      .expect(400)
+      .expect((res) => {
+      //  expect(res.body.text).toBe(text1);
+      })
+      .end(done);
+  })
+
 })

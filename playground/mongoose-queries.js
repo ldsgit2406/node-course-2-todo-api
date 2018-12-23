@@ -9,7 +9,6 @@ var userId = '5bcb3ce1380e5511b461638a';
 //   console.log('Todos', todos);
 // })
 //
-//
 // Todo.findOne({_id : id}).then((todo) => {
 //   console.log('Todo', todo);
 // })
@@ -20,7 +19,6 @@ Todo.findById(id).then((todo) => {
   }else{
     console.log('Todo By ID ', JSON.stringify(todo, undefined, 2));
   }
-
 }).catch((e) => console.log(e));
 
 User.findById(userId).then((user) => {

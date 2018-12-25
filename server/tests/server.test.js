@@ -9,7 +9,8 @@ const {Todo} = require('./../models/todo');
 //   Todo.deleteMany({}).then(() => done());
 // });
 
-const id = '5c1ddd8ab459f019749dbc63';
+const id = '5c1fb4afd2a6023ea4d1d7af';
+const deleteid = '5c1ddd06f7089a2fd48e0e4e';
 
 describe('GET/todos',() => {
 
@@ -93,9 +94,47 @@ describe('GET /todos/:id', () => {
       .end(done);
   })
 
-  it('should return 404 if todo not found', (done) => {
+  it('should return 400 if todo id is not valid', (done) => {
     request(app)
       .get('/todos/5c1dd')
+      .expect(400)
+      .expect((res) => {
+      //  expect(res.body.text).toBe(text1);
+      })
+      .end(done);
+  })
+
+})
+
+
+describe('DELETE /todos/:id', () => {
+
+  it('should DELETE and return todo doc',(done) => {
+    var text1 = 'Test todo text';
+    var todoid = new ObjectID(deleteid).toHexString();
+
+    request(app)
+      .delete(`/todos/${todoid}`)
+      .expect(200)
+      .expect((res) => {
+        //expect(res.body.text).toBe(text1);
+      })
+      .end(done);
+  })
+
+  it('should return 404 if todo not found to delete', (done) => {
+    request(app)
+      .delete(`/todos/5c1ddd8ab459f019749dbc64`)
+      .expect(404)
+      .expect((res) => {
+      //  expect(res.body.text).toBe(text1);
+      })
+      .end(done);
+  })
+
+  it('should return 400 if todo id is not valid', (done) => {
+    request(app)
+      .delete('/todos/5c1dd')
       .expect(400)
       .expect((res) => {
       //  expect(res.body.text).toBe(text1);

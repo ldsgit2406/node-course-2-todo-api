@@ -11,6 +11,7 @@ const {Todo} = require('./../models/todo');
 
 const id = '5c1fb4afd2a6023ea4d1d7af';
 const deleteid = '5c1ddd06f7089a2fd48e0e4e';
+const patchid = '5c1fb8bdc588dc05bc222da0';
 
 describe('GET/todos',() => {
 
@@ -141,5 +142,48 @@ describe('DELETE /todos/:id', () => {
       })
       .end(done);
   })
+
+})
+
+describe('PATCH todos/:id', () =>{
+
+  it('should PATCH and return todo doc',(done) => {
+
+    var todoid = new ObjectID(patchid).toHexString();
+    var newtext = 'New text to be updated';
+
+    request(app)
+      .patch(`/todos/${todoid}`)
+      .send({
+        completed : true,
+        text : newtext
+      })
+      .expect(200)
+      .expect((res) => {
+        //expect(res.body.text).toBe(text1);
+      })
+      .end(done);
+  })
+
+  it('should return 404 if todo not found to delete', (done) => {
+    request(app)
+      .patch(`/todos/5c1ddd8ab459f019749dbc64`)
+      .expect(404)
+      .expect((res) => {
+      //  expect(res.body.text).toBe(text1);
+      })
+      .end(done);
+  })
+
+  it('should return 400 if todo id is not valid', (done) => {
+    request(app)
+      .patch('/todos/5c1dd')
+      .expect(400)
+      .expect((res) => {
+      //  expect(res.body.text).toBe(text1);
+      })
+      .end(done);
+  })
+
 
 })
